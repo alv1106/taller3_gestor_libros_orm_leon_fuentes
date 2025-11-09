@@ -8,12 +8,17 @@ from typing import Iterable, Optional
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import select, update, delete
 from modelo.libro import Libro, Categoria, SessionLocal
+from sqlalchemy.orm import joinedload
 
 
 def agregar(titulo: str, autor: str, precio: float, categoria_id:int) -> None:
     """Crea un libro y confirma la transacción."""
     session = SessionLocal()
     try:
+        categoria = session.get(Categoria, categoria_id)
+        if categoria is None:
+            print(f"Error: la categoría con id {categoria_id} no existe.")
+            return
         nuevo = Libro(titulo=titulo, autor=autor, precio=precio, categoria_id=categoria_id)
         session.add(nuevo)
         session.commit()  # Si algo falla, se capturará y se hará rollback
@@ -30,7 +35,7 @@ def listar() -> Iterable[Libro]:
     """Retorna todos los libros ordenados por id."""
     session = SessionLocal()
     try:
-        stmt = select(Libro).order_by(Libro.id.asc())
+        stmt = select(Libro).options(joinedload(Libro.categoria)).order_by(Libro.id.asc())
         return session.scalars(stmt).all()
     finally:
         session.close()
