@@ -6,9 +6,9 @@ Se usa Lock para proteger la sección crítica (add + commit).
 import threading
 from time import sleep
 from threading import Lock
+from random import uniform
 from sqlalchemy.exc import SQLAlchemyError
 from modelo.libro import Libro, SessionLocal
-from random import uniform
 
 lock = Lock()
 
@@ -34,7 +34,11 @@ def agregar_concurrente(titulo: str, autor: str, precio: float, pausa: float = 0
         session.close()
 
 
-if __name__ == "__main__":
+def ejecutar_concurrencia() -> None:
+    """
+    Crea varios hilos que agregan libros al mismo tiempo.
+    Cada hilo representa un proceso concurrente que escribe en la base.
+    """
     hilos = []
     datos = [
         ("Refactoring", "Martin Fowler", 50.0),
@@ -43,6 +47,8 @@ if __name__ == "__main__":
         ("The Pragmatic Programmer", "Hunt & Thomas", 44.0),
         ("Effective Python", "Brett Slatkin", 42.0),
     ]
+
+    print("\n--- Demostración de concurrencia iniciada ---\n")
 
     for i, (t, a, p) in enumerate(datos, start=1):
         pausa = round(uniform(0.05, 0.2), 3)
@@ -56,3 +62,9 @@ if __name__ == "__main__":
 
     for h in hilos:
         h.join()
+
+    print("\n--- Demostración de concurrencia finalizada ---")
+
+
+if __name__ == "__main__":
+    ejecutar_concurrencia()

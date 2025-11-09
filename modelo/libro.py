@@ -26,7 +26,7 @@ class Categoria(Base):
     """
     Crea la base para las categorías, con una primary key
     basada en un id asignado, back_populates relaciona los dos objetos.
-    Attributes: lol falta agregarlos.
+    Attributes:
     """
     __tablename__ = "categorias"
     id = Column(Integer, primary_key = True)

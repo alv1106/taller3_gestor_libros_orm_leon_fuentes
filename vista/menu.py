@@ -91,7 +91,3 @@ def mostrar_menu() -> None:
 
         else:
             print("Opción no válida.")
-
-
-if __name__ == "__main__":
-    mostrar_menu()
