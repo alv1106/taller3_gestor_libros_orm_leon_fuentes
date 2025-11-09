@@ -7,14 +7,14 @@ Incluye manejo explícito de transacciones (commit/rollback) y cierres de sesió
 from typing import Iterable, Optional
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import select, update, delete
-from modelo.libro import Libro, SessionLocal
+from modelo.libro import Libro, Categoria, SessionLocal
 
 
-def agregar(titulo: str, autor: str, precio: float) -> None:
+def agregar(titulo: str, autor: str, precio: float, categoria_id:int) -> None:
     """Crea un libro y confirma la transacción."""
     session = SessionLocal()
     try:
-        nuevo = Libro(titulo=titulo, autor=autor, precio=precio)
+        nuevo = Libro(titulo=titulo, autor=autor, precio=precio, categoria_id=categoria_id)
         session.add(nuevo)
         session.commit()  # Si algo falla, se capturará y se hará rollback
         print(f"Agregado: {nuevo}")
@@ -83,5 +83,30 @@ def eliminar_por_titulo(titulo: str) -> int:
         print("Error en eliminación. Transacción revertida.")
         print("Detalle:", e)
         return 0
+    finally:
+        session.close()
+
+
+def agregar_categoria(nombre:str)->None:
+    session = SessionLocal()
+    try:
+        nueva = Categoria(nombre=nombre)
+        session.add(nueva)
+        session.commit()
+        print(f"Se ha agregado la categoria: {nueva.nombre}")
+    except SQLAlchemyError as e:
+        session.rollback()
+        print("Error al agregar. Transacción revertida.")
+        print("Detalle:", e)
+    finally:
+        session.close()
+
+
+def listar_categorias():
+    """Retorna todas las categorias."""
+    session = SessionLocal()
+    try:
+        stmt = select(Categoria).order_by(Categoria.id.asc())
+        return session.scalars(stmt).all()
     finally:
         session.close()
