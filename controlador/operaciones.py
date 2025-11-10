@@ -94,6 +94,7 @@ class Eliminar:
             return 0
         finally:
             session.close()
+            
 
 class AgregarCategoria:
     def agregar_categoria(self, nombre:str)->None:
@@ -129,4 +130,19 @@ class BuscarCategoria:
             return session.scalars(stmt).all()
         finally:
             session.close()
-
+class EliminarCategoria:
+    """Elimina categorías por nombre. Retorna la cantidad eliminada."""
+    def eliminar_la_categoria(self, nombre: str) -> int:
+        session = SessionLocal()
+        try:
+            stmt = delete(Categoria).where(Categoria.nombre == nombre)
+            result = session.execute(stmt)
+            session.commit()
+            return result.rowcount or 0
+        except SQLAlchemyError as e:
+            session.rollback()
+            print("Error en eliminación. Transacción revertida.")
+            print("Detalle:", e)
+            return 0
+        finally:
+            session.close()

@@ -11,17 +11,19 @@ from controlador.operaciones import (
     Eliminar,
     AgregarCategoria,
     ListarCategorias,
-    BuscarCategoria
+    BuscarCategoria,
+    EliminarCategoria
 )
 
 agregar_li = AgregarLibro()
 listar_li = ListarLibros()
 buscar_autor = BuscarAutor()
 actualizar = Actualizar()
-eliminar = Eliminar()
+eliminar_li = Eliminar()
 agregar_cate = AgregarCategoria()
 listar_cate = ListarCategorias()
 buscar_cate = BuscarCategoria()
+eliminar_cate = EliminarCategoria()
 
 
 def mostrar_menu() -> None:
@@ -34,7 +36,8 @@ def mostrar_menu() -> None:
         print("5. Actualizar precio por título")
         print("6. Eliminar por título")
         print("7. Buscar por categoria")
-        print("8. Salir")
+        print("8. Eliminar una categoria")
+        print("9. Salir")
 
         op = input("Seleccione una opción: ")
 
@@ -102,7 +105,7 @@ def mostrar_menu() -> None:
 
         elif op == "6":
             t = input("Título a eliminar: ")
-            n = eliminar.eliminar_por_titulo(t)
+            n = eliminar_li.eliminar_por_titulo(t)
             print(f"Registros eliminados: {n}")
         elif op == "7":
             categorias = listar_cate.listar_categorias()
@@ -126,10 +129,14 @@ def mostrar_menu() -> None:
                     print(x)
             else:
                 print("No se encontraron libros en esa categoría.")
-
-
-
         elif op == "8":
+            n = input("Nombre de la categoría a eliminar: ")
+            r = eliminar_cate.eliminar_la_categoria(n)
+            print(f"Categorías eliminadas: {r}")
+
+
+
+        elif op == "9":
             print("Fin de la sesión.")
             break
 
