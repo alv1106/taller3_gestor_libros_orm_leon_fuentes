@@ -15,7 +15,8 @@ def mostrar_menu() -> None:
         print("4. Buscar por autor")
         print("5. Actualizar precio por título")
         print("6. Eliminar por título")
-        print("7. Salir")
+        print("7. Buscar por categoria")
+        print("8. Salir")
 
         op = input("Seleccione una opción: ")
 
@@ -84,8 +85,32 @@ def mostrar_menu() -> None:
             t = input("Título a eliminar: ")
             n = operaciones.eliminar_por_titulo(t)
             print(f"Registros eliminados: {n}")
-
         elif op == "7":
+            categorias = operaciones.listar_categorias()
+            if not categorias:
+                print("No hay categorías registradas.")
+                continue
+
+            print("\nCategorías disponibles:")
+            for c in categorias:
+                print(f"{c.id}. {c.nombre}")
+
+            try:
+                cat_id = int(input("selecciones una id, para filtar por esa categoria "))
+            except ValueError:
+                print("ID inválido.")
+                continue
+
+            libros = operaciones.buscar_por_categoria_id(cat_id)
+            if libros:
+                for x in libros:
+                    print(x)
+            else:
+                print("No se encontraron libros en esa categoría.")
+
+
+
+        elif op == "8":
             print("Fin de la sesión.")
             break
 

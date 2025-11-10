@@ -115,3 +115,13 @@ def listar_categorias():
         return session.scalars(stmt).all()
     finally:
         session.close()
+
+def buscar_por_categoria_id(categoria_id: int)-> Iterable[Libro]:
+    """Filtra libros por categoría exacta (usando su ID)."""
+    session = SessionLocal()
+    try:
+        stmt = select(Libro).where(Libro.categoria_id == categoria_id).order_by(Libro.titulo.asc())
+        return session.scalars(stmt).all()
+    finally:
+        session.close()
+
