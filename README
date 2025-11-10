@@ -1,0 +1,13 @@
+A través de este taller se pudo evidenciar el funcionamiento de la biblioteca SQLAlchemy, 
+que facilitaba en gran medida el uso de las funciones de la base de datos SQL, 
+adicionalmente se pudieron establecer bases de datos relacionadas entre sí (relación de uno a varios), 
+establecida como “A cada libro le pertenece únicamente una categoría” y 
+“a una categoría le pertenecen varios libros”.
+Para la realización se añadieron funciones útiles para el usuario, 
+en donde puede tener un control de la base de datos, desde las categorías hasta los libros, 
+en donde se establecieron funciones como eliminar, cambiar de nombre, actualizar, listar, etc,
+ que resultan sencillas de manejar para el usuario.
+Esta biblioteca también facilitó su codificación en cierta forma, logrando un mejor manejo 
+de seguridad en cuanto al manejo de los datos para que el código fuera más robusto.
+Adicionalmente se tuvo en cuenta la concurrencia para evitar fallos al procesar solicitudes 
+y se fortaleció la seguridad haciendo uso de commit y rollback.
