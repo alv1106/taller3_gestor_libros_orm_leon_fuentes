@@ -3,7 +3,25 @@ Módulo: vista.main
 Proporciona una interfaz por consola para probar el controlador.
 """
 
-from controlador import operaciones
+from controlador.operaciones import (
+    AgregarLibro,
+    ListarLibros,
+    BuscarAutor,
+    Actualizar,
+    Eliminar,
+    AgregarCategoria,
+    ListarCategorias,
+    BuscarCategoria
+)
+
+agregar_li = AgregarLibro()
+listar_li = ListarLibros()
+buscar_autor = BuscarAutor()
+actualizar = Actualizar()
+eliminar = Eliminar()
+agregar_cate = AgregarCategoria()
+listar_cate = ListarCategorias()
+buscar_cate = BuscarCategoria()
 
 
 def mostrar_menu() -> None:
@@ -21,8 +39,9 @@ def mostrar_menu() -> None:
         op = input("Seleccione una opción: ")
 
         if op == "1":
-            nombre = input("Nombre de la categoría: ")
-            operaciones.agregar_categoria(nombre)
+            if op == "1":
+                nombre = input("Nombre de la categoría: ").strip()
+                agregar_cate.agregar_categoria(nombre)
 
         elif op == "2":
             t = input("Título: ")
@@ -34,7 +53,7 @@ def mostrar_menu() -> None:
                 print("No se ha digitado un precio valido.")
                 continue
 
-            categorias = operaciones.listar_categorias()
+            categorias = listar_cate.listar_categorias()
             if not categorias:
                 print("No hay categorías. Agrega una primero (opción 1).")
                 continue
@@ -52,10 +71,10 @@ def mostrar_menu() -> None:
             if not any(c.id == cat_id for c in categorias):
                 print(f"No existe la categoría con el ID seleccionado.")
                 continue
-            operaciones.agregar(t, a, p, cat_id)
+            agregar_li.agregar_libro(t, a, p, cat_id)
 
         elif op == "3":
-            libros = operaciones.listar()
+            libros = listar_li.listar_libros()
             if libros:
                 print("\nID | Título | Autor | Precio | Categoria")
                 print("-------------------------------")
@@ -67,7 +86,7 @@ def mostrar_menu() -> None:
 
         elif op == "4":
             a = input("Autor: ")
-            libros = operaciones.buscar_por_autor(a)
+            libros = buscar_autor.buscar_por_autor(a)
             for x in libros:
                 print(x)
 
@@ -78,15 +97,15 @@ def mostrar_menu() -> None:
             except ValueError:
                 print("Precio inválido. Operación cancelada.")
                 continue
-            actualizado = operaciones.actualizar_precio(t, np)
+            actualizado = actualizar.actualizar_precio(t, np)
             print("Actualizado." if actualizado else "No se encontró el título.")
 
         elif op == "6":
             t = input("Título a eliminar: ")
-            n = operaciones.eliminar_por_titulo(t)
+            n = eliminar.eliminar_por_titulo(t)
             print(f"Registros eliminados: {n}")
         elif op == "7":
-            categorias = operaciones.listar_categorias()
+            categorias = listar_cate.listar_categorias()
             if not categorias:
                 print("No hay categorías registradas.")
                 continue
@@ -101,7 +120,7 @@ def mostrar_menu() -> None:
                 print("ID inválido.")
                 continue
 
-            libros = operaciones.buscar_por_categoria_id(cat_id)
+            libros = buscar_cate.buscar_por_categoria(cat_id)
             if libros:
                 for x in libros:
                     print(x)
